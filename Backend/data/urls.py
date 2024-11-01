@@ -12,6 +12,7 @@ urlpatterns=[
     re_path(r"^user/(?P<name>\D+)/(?P<age>\d+)", views.user),
     re_path(r"^user/(?P<name>\D+)", views.user),
     re_path(r"^user", views.user),
+    re_path(r"^postuser", views.postuser),
     path('sum/<str:num>', views.sum),
     re_path(r'^about', views.about,kwargs={"name":"Tom", "age": 38}),
     path("set", views.set),
