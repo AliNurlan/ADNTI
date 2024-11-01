@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Django на METANIT.COM</title>
+</head>
+<body>
+    <h1>Здесь используется две переменных: message и header. Они будут передаваться из представления.</h1>
+    <h2>{{ header }}</h1>
+    <p>Имя: {{ user.name}} Возраст: {{user.age}}</p>
+    <p>Адресс: ул. {{address.0}}, д. {{address.1}}, кв. {{address.2}}</p>
+    <p>Языки: {{langs.0}}, {{langs.1}}</p>
+    <h2>User form</h2>
+    <form method="post" action="postuser/">
+        {% csrf_token %}
+        <p>Name:<br> <input name="name" /></p>
+        <p>Age:<br> <input name="age" type="number" /></p>
+        <input type="submit" value="Send" />
+    </form>
+</body>
+</html>
