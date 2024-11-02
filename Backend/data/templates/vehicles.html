@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Management</title>
+    <style>
+        .login-form {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        .vehicle-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-form">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+    
+    <h1>Vehicles</h1>
+    <div id="vehicleList"></div>
+    
+    <script>
+        async function loadVehicles() {
+            const vehicles = await getVehicles();
+            const vehicleList = document.getElementById('vehicleList');
+            
+            vehicles.results.forEach(vehicle => {
+                vehicleList.innerHTML += `
+                    <div class="vehicle-card">
+                        <h3>${vehicle.vehicle_number}</h3>
+                        <p>Type: ${vehicle.vehicle_type}</p>
+                        <p>Status: ${vehicle.engine_status}</p>
+                        <p>Fuel Level: ${vehicle.fuel_level}%</p>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html> 
