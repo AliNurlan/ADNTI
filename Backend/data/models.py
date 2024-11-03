@@ -21,12 +21,12 @@ class Vehicle(models.Model):
     tire_pressure_front_right = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     tire_pressure_rear_left = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     tire_pressure_rear_right = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    fuel_level = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    fuel_level = models.DecimalField(max_digits=5, decimal_places=2)
     engine_status = models.CharField(max_length=20, choices=[
         ('running', 'Running'),
         ('stopped', 'Stopped'),
         ('maintenance', 'Under Maintenance')
-    ], default='stopped')
+    ])
 
     def __str__(self):
         return f"{self.vehicle_type} - {self.vehicle_number}"
@@ -55,7 +55,7 @@ class FuelConsumption(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     fuel_type = models.CharField(max_length=50)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
-    odometer_reading = models.IntegerField(default=0)
+    odometer_reading = models.IntegerField()
     
     def __str__(self):
         return f"{self.vehicle.vehicle_number} - {self.timestamp}"
@@ -67,7 +67,7 @@ class MaintenanceRecord(models.Model):
     date_performed = models.DateTimeField()
     next_maintenance_date = models.DateTimeField()
     cost = models.DecimalField(max_digits=10, decimal_places=2)
-    technician = models.CharField(max_length=100, default='')
+    technician = models.CharField(max_length=100)
     parts_replaced = models.TextField(blank=True)
     
     def __str__(self):

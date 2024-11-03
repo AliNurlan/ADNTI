@@ -51,6 +51,7 @@ router.register(r'work-activities', WorkActivityViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('data.urls')),  # Добавляем URLs приложения data
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     # JWT endpoints

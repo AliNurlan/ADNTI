@@ -35,10 +35,21 @@ class VehicleViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['vehicle_type', 'engine_status']
-    search_fields = ['vehicle_number', 'vehicle_type']
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['vehicle_number', 'vehicle_type', 'engine_status']
     ordering_fields = ['last_updated', 'vehicle_number']
+
+    def get_queryset(self):
+        queryset = Vehicle.objects.all()
+        vehicle_type = self.request.query_params.get('vehicle_type', None)
+        engine_status = self.request.query_params.get('engine_status', None)
+        
+        if vehicle_type:
+            queryset = queryset.filter(vehicle_type=vehicle_type)
+        if engine_status:
+            queryset = queryset.filter(engine_status=engine_status)
+            
+        return queryset
 
 class FuelConsumptionViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
@@ -59,3 +70,6 @@ class EquipmentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
+
+def vehicles(request):
+    return render(request, 'vehicles.html')

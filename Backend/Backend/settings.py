@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',  # для API документации
     'corsheaders',  # для CORS
+    'django_filters',  # Добавьте эту строку
     'data.apps.DataConfig',
 ]
 
+# Настройки REST Framework с JWT аутентификацией
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -55,6 +57,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'TEMPLATE_PACK': 'rest_framework/vertical',
 }
 
 # Настройки JWT
