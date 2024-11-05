@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Персонал</title>
+    <link href="{% static 'css/personal.css' %}" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <button class="btn1">Главная</button>
+        <button class="btn1">О нас</button>
+        <button class="btn1">Персонал</button>
+        <img src="{% static 'img/mainlogo.png' %}" alt="logo" class="logo">
+    </header>
+
+    <div class="main-content">
+        <h1>Персонал</h1>
+        <img src="{% static 'img/staff.png' %}" alt="staff" class="staff-image">
+        
+        <div class="search-section">
+            <h2>Поиск работника</h2>
+            <div class="search-box">
+                <input type="text" placeholder="Поиск...">
+                <div class="search-icon"></div>
+            </div>
+        </div>
+
+        <div class="staff-grid">
+            <!-- Желтая секция -->
+            <div class="staff-column yellow">
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Программист</h3>
+                        <p>4/9</p>
+                    </div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Эколог</h3>
+                        <p>7/9</p>
+                    </div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Бухгалтер</h3>
+                        <p>2/3</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Зеленая секция -->
+            <div class="staff-column green">
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Тракторист</h3>
+                        <p>11/15</p>
+                    </div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Комбайнер</h3>
+                        <p>9/10</p>
+                    </div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Электрик</h3>
+                        <p>5/5</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Красная секция -->
+            <div class="staff-column red">
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Инженер</h3>
+                        <p>5/6</p>
+                    </div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Агроном</h3>
+                        <p>6/7</p>
+                    </div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-indicator"></div>
+                    <div class="staff-info">
+                        <h3>Менеджер</h3>
+                        <p>3/4</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="background-elements">
+        <div class="gradient-circle"></div>
+        <div class="gradient-bottom"></div>
+        <img src="{% static 'img/bdai.jpeg' %}" alt="sprout" class="sprout-left">
+        <img src="{% static 'img/bdai.jpeg' %}" alt="sprout" class="sprout-center">
+        <img src="{% static 'img/bdai.jpeg' %}" alt="sprout" class="sprout-rightdai
+</body>
+</html>

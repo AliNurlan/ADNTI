@@ -72,4 +72,19 @@ class EquipmentViewSet(viewsets.ModelViewSet):
     serializer_class = EquipmentSerializer
 
 def vehicles(request):
+    """
+    Отображает страницу со списком транспортных средств
+    """
     return render(request, 'vehicles.html')
+
+def login(request):
+    """
+    Отображает страницу со списком
+    """
+    return render(request, 'auto.html')
+
+def personal(request):
+    """
+    Отображает страницу персонала
+    """
+    return render(request, 'personal.html')

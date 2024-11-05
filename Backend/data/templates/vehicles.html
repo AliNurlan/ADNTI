@@ -2,19 +2,8 @@
 <html>
 <head>
     <title>Vehicle Management</title>
-    <style>
-        .login-form {
-            margin-bottom: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-        }
-        .vehicle-card {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-    </style>
+    {% load static %}
+    <link href="{% static 'css/vehicles.css' %}" rel="stylesheet">
 </head>
 <body>
     <div class="login-form">
@@ -23,9 +12,35 @@
         <input type="password" id="password" placeholder="Password">
         <button onclick="login()">Login</button>
     </div>
-    
-    <h1>Vehicles</h1>
-    <div id="vehicleList"></div>
+    <div class="logo">
+        <img src="{% static 'img/logo.jpg' %}" alt="Logo" >
+        <p>Fleet Management</p>
+    </div>
+    <div class="vehicles">
+        <h1>Vehicles</h1>
+        <button class="refresh" onclick="loadVehicles()">
+        </button>
+    </div>
+    <div id="vehicleList">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Vehicle Number</th>
+                    <th>Type</th>
+                    <th>GPS Device ID</th>
+                    <th>Location (Lat, Long)</th>
+                    <th>Tire Pressure (FL, FR, RL, RR)</th>
+                    <th>Fuel Level</th>
+                    <th>Engine Status</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody id="vehicleTableBody">
+                <!-- Данные будут добавлены через JavaScript -->
+            </tbody>
+        </table>
+    </div>
     
     <script>
         async function getVehicles() {
@@ -77,19 +92,34 @@
 
         async function loadVehicles() {
             const vehicles = await getVehicles();
-            const vehicleList = document.getElementById('vehicleList');
-            vehicleList.innerHTML = '';
+            const tableBody = document.getElementById('vehicleTableBody');
+            tableBody.innerHTML = '';
             
             vehicles.results.forEach(vehicle => {
-                vehicleList.innerHTML += `
-                    <div class="vehicle-card">
-                        <h3>${vehicle.vehicle_number}</h3>
-                        <p>Type: ${vehicle.vehicle_type}</p>
-                        <p>Status: ${vehicle.engine_status}</p>
-                        <p>Fuel Level: ${vehicle.fuel_level}%</p>
-                    </div>
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${vehicle.id}</td>
+                    <td>${vehicle.vehicle_number}</td>
+                    <td>${vehicle.vehicle_type}</td>
+                    <td>${vehicle.gps_device_id}</td>
+                    <td>${vehicle.last_location_lat}, ${vehicle.last_location_long}</td>
+                    <td>
+                        FL: ${vehicle.tire_pressure_front_left || 'N/A'}, 
+                        FR: ${vehicle.tire_pressure_front_right || 'N/A'},
+                        RL: ${vehicle.tire_pressure_rear_left || 'N/A'}, 
+                        RR: ${vehicle.tire_pressure_rear_right || 'N/A'}
+                    </td>
+                    <td>${vehicle.fuel_level}%</td>
+                    <td>${vehicle.engine_status}</td>
+                    <td>${new Date(vehicle.last_updated).toLocaleString()}</td>
                 `;
+                tableBody.appendChild(row);
             });
+        }
+
+        // Проверяем, есть ли токен, и если есть - загружаем данные
+        if (localStorage.getItem('access_token')) {
+            loadVehicles();
         }
     </script>
 </body>

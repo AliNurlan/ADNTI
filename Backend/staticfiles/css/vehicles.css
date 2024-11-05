@@ -1,0 +1,127 @@
+@font-face {
+    font-family: 'jost';
+    src: url('../fonts/jost/Jost-Black.ttf') format('truetype');
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(../img/bdai.jpeg);
+    background-size: cover;
+}
+
+.logo p {
+    position: absolute;
+    top: 35%;
+    left: 17%;
+    font-size: 7vw;
+    font-family: 'jost'; 
+    text-align: center;
+    color: white;
+}
+
+.refresh {
+    position: relative;
+    top: 1vw;
+    left: 2vw;
+    border: none;
+    background-color: transparent;
+    width: 3.5vw;
+    height: 3.5vw;
+    background-image: url(../img/refresh.png);
+    background-size: 100% 100%;
+}
+.vehicles {
+    position: relative;
+    width: 95%;
+    left: 2.5%;
+    display: flex;
+    justify-content: left-start;
+}
+
+h1 {
+    color: #333;
+}
+h2 {
+    color: #42565a;
+}
+.fName, .sName, .login{
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.nameForm {
+    margin-top: 20px;
+    display: none;
+    width: 50%;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 50px 35px;
+    background-color: rgb(83, 148, 74);
+    border-radius: 5px;
+}
+.passwordForm {
+    margin-top: 20px;
+    display: none;
+    width: 50%;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 50px 35px;
+    background-color: rgb(185, 111, 41);
+    border-radius: 5px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+input[type="text"], input[type="password"] {
+    width: 20%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+button {
+    background-color: #e2a03b;
+    color: #ffffff;
+    border: none;
+    border-radius: 2.5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}
+.error {
+    color: #ff0000;
+    font-weight: bold;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: #f2f2f2;
+}
+th:last-child, td:last-child {
+    background-color: yellow;
+}
+img {
+    width: 100%;
+    filter: brightness(0.5);
+}
