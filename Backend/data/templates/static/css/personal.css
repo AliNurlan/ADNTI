@@ -69,7 +69,7 @@ h1 {
     margin: 2.93vw 0;
 }
 
-.search-box {
+.search-box input{
     width: 46.92vw;
     height: 3.73vw;
     background: #D9D9D9;
@@ -78,8 +78,11 @@ h1 {
     display: flex;
     align-items: center;
     padding: 0 1.46vw;
+    border: none;
 }
-
+:placeholder-shown{
+    font-size: larger;
+}
 .staff-grid {
     display: flex;
     justify-content: space-around;
@@ -126,7 +129,7 @@ h1 {
 }
 
 .staff-info h3 {
-    font-size: 2.34vw;
+    font-size: 2.14vw;
     margin: 0;
     margin-bottom: 0.73vw;
 }
@@ -145,32 +148,24 @@ h1 {
     z-index: -1;
 }
 
-.gradient-circle {
-    position: absolute;
-    width: 59.44vw;
-    height: 53.07vw;
-    left: 25.84vw;
-    top: 20.64vw;
-    background: radial-gradient(50% 50% at 50% 50%, #737373 0%, #FFF7E4 70%);
-}
+
 
 .gradient-bottom {
     position: absolute;
     width: 100%;
     height: 52.36vw;
     left: 0;
-    bottom: -25vh;
-    background-image: linear-gradient(to bottom, rgba(55, 55, 55, .0) 10%, rgba(100, 100, 100, .80) 0%), url(../img/wheat.png);
+    bottom: -114vh;
+    background-image: linear-gradient(rgba(203, 212, 206, 0.705) 10%, rgba(92, 100, 100, 0.8), rgba(28, 28, 28));
     background-size: contain;
 }
-.gradient-bottom::before {
-    content: '';
-    z-index: 10;
-    width: 100%;
-    height: 100%;
-    display: block;
-    position: absolute;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 50%);
+
+.gradient-bottom img {
+   position: absolute;
+   height: 105vh;
+   width: 100%;
+   background-blend-mode: color-burn;
+   z-index: -1;
 }
 
 .staff-info {
@@ -199,3 +194,4 @@ h1 {
 .workplace-item p {
     margin: 5px 0;
 }
+
