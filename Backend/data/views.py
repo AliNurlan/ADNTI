@@ -117,3 +117,13 @@ def get_staff_workplaces(request, staff_id):
         return JsonResponse({'error': 'Сотрудник не найден'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
+def staff_list(request, position):
+    """
+    Отображает список сотрудников по должности
+    """
+    staff_list = Staff.objects.filter(position=position)
+    return render(request, 'staff_list.html', {
+        'staff_list': staff_list,
+        'position': position
+    })

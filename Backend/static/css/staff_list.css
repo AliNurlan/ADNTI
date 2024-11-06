@@ -1,0 +1,41 @@
+.staff-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.staff-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.staff-card h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.staff-card p {
+    margin: 0;
+    color: #666;
+}
+
+.no-staff {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+/* Наследуем общие стили из personal.css */
+header {
+    /* ... существующие стили ... */
+}
+
+.main-content {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+} 

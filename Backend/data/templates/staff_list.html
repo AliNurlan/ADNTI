@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список сотрудников - {{ position }}</title>
+    <link href="{% static 'css/staff_list.css' %}" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <button class="btn1" id="backButton">Назад</button>
+        <img src="{% static 'img/mainlogo.png' %}" alt="logo" class="logo">
+    </header>
+
+    <div class="main-content">
+        <h1>Сотрудники - {{ position }}</h1>
+        
+        <div class="staff-list">
+            {% for staff in staff_list %}
+            <div class="staff-card">
+                <h3>{{ staff.full_name }}</h3>
+                <p>{{ staff.position }}</p>
+            </div>
+            {% empty %}
+            <p class="no-staff">Сотрудники с данной должностью не найдены</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = "{% url 'data:personal' %}";
+        });
+    </script>
+</body>
+</html> 

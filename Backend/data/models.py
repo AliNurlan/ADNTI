@@ -82,8 +82,24 @@ class WorkActivity(models.Model):
         return f"{self.vehicle.vehicle_number} - {self.activity_type}"
 
 class Staff(models.Model):
+    POSITION_CHOICES = [
+        ('Программист', 'Программист'),
+        ('Эколог', 'Эколог'),
+        ('Бухгалтер', 'Бухгалтер'),
+        ('Тракторист', 'Тракторист'),
+        ('Комбайнер', 'Комбайнер'),
+        ('Электрик', 'Электрик'),
+        ('Инженер', 'Инженер'),
+        ('Агроном', 'Агроном'),
+        ('Менеджер', 'Менеджер'),
+    ]
+
     full_name = models.CharField(max_length=200, verbose_name="ФИО")
-    position = models.CharField(max_length=100, verbose_name="Должность")
+    position = models.CharField(
+        max_length=100, 
+        verbose_name="Должность",
+        choices=POSITION_CHOICES
+    )
     salary = models.DecimalField(
         max_digits=10, 
         decimal_places=2, 

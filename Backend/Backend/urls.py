@@ -27,9 +27,12 @@ from data.views import (
     FuelConsumptionViewSet,
     MaintenanceRecordViewSet,
     WorkActivityViewSet,
+    StaffViewSet,
     vehicles,
     login,
-    personal
+    personal,
+    get_staff_workplaces,
+    staff_list,
 )
 
 # Настройка документации API
@@ -54,8 +57,7 @@ router.register(r'work-activities', WorkActivityViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('vehicles-page/', vehicles, name='vehicles-page'),
-    path('login/', login, name='login'),
+    path('', include('data.urls', namespace='data')),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     # JWT endpoints
@@ -64,5 +66,4 @@ urlpatterns = [
     # Документация API
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('personal/', personal, name='personal'),
 ]
