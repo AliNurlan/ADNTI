@@ -162,7 +162,7 @@ h1 {
 
 .gradient-bottom img {
    position: absolute;
-   height: 105vh;
+   height: 50vw;
    width: 100%;
    background-blend-mode: color-burn;
    z-index: -1;

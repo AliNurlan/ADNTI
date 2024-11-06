@@ -7,14 +7,16 @@ from .models import (
     FuelConsumption,
     MaintenanceRecord,
     WorkActivity,
-    Equipment
+    Equipment,
+    AgriculturalWork
 )
 from .serializers import (
     VehicleSerializer,
     FuelConsumptionSerializer,
     MaintenanceRecordSerializer,
     WorkActivitySerializer,
-    EquipmentSerializer
+    EquipmentSerializer,
+    AgriculturalWorkSerializer
 )
 
 class VehicleViewSet(viewsets.ModelViewSet):
@@ -71,6 +73,11 @@ class EquipmentViewSet(viewsets.ModelViewSet):
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
 
+class AgriculturalWorkViewSet(viewsets.ModelViewSet):
+    queryset = AgriculturalWork.objects.all()
+    serializer_class = AgriculturalWorkSerializer
+    permission_classes = [IsAuthenticated]
+
 def vehicles(request):
     """
     Отображает страницу со списком транспортных средств
@@ -88,3 +95,9 @@ def personal(request):
     Отображает страницу персонала
     """
     return render(request, 'personal.html')
+
+def agricultural_works(request):
+    """
+    Отображает страницу агроработ
+    """
+    return render(request, 'agricultural_works.html')

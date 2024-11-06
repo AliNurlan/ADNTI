@@ -73,6 +73,20 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",  # для локальной разработки
 ]
 
+# Настройки CORS для разработки
+CORS_ALLOW_ALL_ORIGINS = True  # Только для разработки!
+# Для продакшена настройте конкретные домены:
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",
+#     "http://127.0.0.1:8000",
+# ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # Добавляем CORS middleware
     'django.middleware.security.SecurityMiddleware',

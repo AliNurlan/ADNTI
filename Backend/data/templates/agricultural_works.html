@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Управление Агроработами</title>
+    {% load static %}
+    <link href="{% static 'css/agricultural_works.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <!-- Навигационное меню -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{% static 'img/agro_logo.jpg' %}" alt="Логотип">
+            <p>Управление Агроработами</p>
+        </div>
+        <div class="nav-user" id="userSection" style="display: none;">
+            <span id="userName"></span>
+            <button onclick="logout()" class="logout-btn">Выйти</button>
+        </div>
+    </nav>
+
+    <!-- Форма входа -->
+    <div class="login-form" id="loginForm">
+        <div class="login-card">
+            <h2>Вход в систему</h2>
+            <input type="text" id="username" placeholder="Имя пользователя">
+            <input type="password" id="password" placeholder="Пароль">
+            <button onclick="login()">Войти</button>
+            <div id="loginError" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content" id="mainContent" style="display: none;">
+        <div class="controls">
+            <h1>Сельскохозяйственные Работы</h1>
+            <div class="action-buttons">
+                <button onclick="showAddWorkForm()" class="add-btn">
+                    <span class="material-icons">add</span> Добавить работу
+                </button>
+                <button onclick="loadWorks()" class="refresh-btn">
+                    <span class="material-icons">refresh</span> Обновить
+                </button>
+            </div>
+            <div class="filters">
+                <select id="statusFilter" onchange="applyFilters()">
+                    <option value="">Все статусы</option>
+                    <option value="planned">Запланировано</option>
+                    <option value="in_progress">В процессе</option>
+                    <option value="completed">Завершено</option>
+                </select>
+                <input type="date" id="dateFilter" onchange="applyFilters()">
+                <input type="text" id="searchInput" placeholder="Поиск..." onkeyup="applyFilters()">
+            </div>
+        </div>
+
+        <!-- Таблица работ -->
+        <div id="worksList" class="works-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Тип работы</th>
+                        <th>Поле</th>
+                        <th>Культура</th>
+                        <th>Статус</th>
+                        <th>Техника</th>
+                        <th>Оператор</th>
+                        <th>Прогресс</th>
+                        <th>Дата начала</th>
+                        <th>Планируемая дата завершения</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="worksTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления/редактирования работы -->
+    <div id="workModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Добавить работу</h2>
+            <form id="workForm">
+                <input type="hidden" id="workId">
+                <div class="form-group">
+                    <label for="workType">Тип работы:</label>
+                    <select id="workType" required>
+                        <option value="">Выберите тип работы</option>
+                        <option value="plowing">Вспашка</option>
+                        <option value="seeding">Посев</option>
+                        <option value="harvesting">Уборка</option>
+                        <option value="fertilizing">Внесение удобрений</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fieldName">Поле:</label>
+                    <input type="text" id="fieldName" required>
+                </div>
+                <div class="form-group">
+                    <label for="cropType">Культура:</label>
+                    <input type="text" id="cropType" required>
+                </div>
+                <div class="form-group">
+                    <label for="machinery">Техника:</label>
+                    <input type="text" id="machinery" required>
+                </div>
+                <div class="form-group">
+                    <label for="operator">Оператор:</label>
+                    <input type="text" id="operator" required>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Дата начала:</label>
+                    <input type="datetime-local" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="plannedEndDate">Планируемая дата завершения:</label>
+                    <input type="datetime-local" id="plannedEndDate" required>
+                </div>
+                <button type="submit" class="submit-btn">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Глобальные переменные
+        let currentWorks = [];
+        
+        // Функции для работы с API
+        async function getWorks() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/agricultural-works/', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        await refreshToken();
+                        return getWorks();
+                    }
+                    throw new Error('Network response was not ok');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return { results: [] };
+            }
+        }
+
+        async function refreshToken() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        refresh: localStorage.getItem('refresh_token')
+                    })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('access_token', data.access);
+                    return true;
+                }
+                throw new Error('Token refresh failed');
+            } catch (error) {
+                logout();
+                return false;
+            }
+        }
+
+        async function createWork(workData) {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/agricultural-works/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(workData)
+                });
+                if (!response.ok) throw new Error('Failed to create work');
+                return await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
+            }
+        }
+
+        async function updateWork(workId, workData) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/api/agricultural-works/${workId}/`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(workData)
+                });
+                if (!response.ok) throw new Error('Failed to update work');
+                return await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
+            }
+        }
+
+        async function deleteWork(workId) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/api/agricultural-works/${workId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                    }
+                });
+                if (!response.ok) throw new Error('Failed to delete work');
+                return true;
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
+            }
+        }
+
+        // Функции UI
+        function showAddWorkForm() {
+            document.getElementById('modalTitle').textContent = 'Добавить работу';
+            document.getElementById('workForm').reset();
+            document.getElementById('workId').value = '';
+            document.getElementById('workModal').style.display = 'block';
+        }
+
+        function showEditWorkForm(workId) {
+            const work = currentWorks.find(w => w.id === workId);
+            if (!work) return;
+
+            document.getElementById('modalTitle').textContent = 'Редактировать работу';
+            document.getElementById('workId').value = work.id;
+            document.getElementById('workType').value = work.work_type;
+            document.getElementById('fieldName').value = work.field_name;
+            document.getElementById('cropType').value = work.crop_type;
+            document.getElementById('machinery').value = work.machinery;
+            document.getElementById('operator').value = work.operator;
+            document.getElementById('startDate').value = work.start_date.slice(0, 16);
+            document.getElementById('plannedEndDate').value = work.planned_end_date.slice(0, 16);
+            
+            document.getElementById('workModal').style.display = 'block';
+        }
+
+        async function handleWorkSubmit(event) {
+            event.preventDefault();
+            const workId = document.getElementById('workId').value;
+            
+            const workData = {
+                work_type: document.getElementById('workType').value,
+                field_name: document.getElementById('fieldName').value,
+                crop_type: document.getElementById('cropType').value,
+                machinery: document.getElementById('machinery').value,
+                operator: document.getElementById('operator').value,
+                start_date: document.getElementById('startDate').value,
+                planned_end_date: document.getElementById('plannedEndDate').value,
+            };
+
+            try {
+                if (workId) {
+                    await updateWork(workId, workData);
+                } else {
+                    await createWork(workData);
+                }
+                document.getElementById('workModal').style.display = 'none';
+                await loadWorks();
+            } catch (error) {
+                alert('Ошибка при сохранении работы');
+            }
+        }
+
+        async function handleDeleteWork(workId) {
+            if (!confirm('Вы уверены, что хотите удалить эту работу?')) return;
+            
+            try {
+                await deleteWork(workId);
+                await loadWorks();
+            } catch (error) {
+                alert('Ошибка при удалении работы');
+            }
+        }
+
+        function applyFilters() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const searchFilter = document.getElementById('searchInput').value.toLowerCase();
+
+            const filteredWorks = currentWorks.filter(work => {
+                const matchesStatus = !statusFilter || work.status === statusFilter;
+                const matchesDate = !dateFilter || work.start_date.includes(dateFilter);
+                const matchesSearch = !searchFilter || 
+                    work.field_name.toLowerCase().includes(searchFilter) ||
+                    work.operator.toLowerCase().includes(searchFilter);
+
+                return matchesStatus && matchesDate && matchesSearch;
+            });
+
+            renderWorks(filteredWorks);
+        }
+
+        function renderWorks(works) {
+            const tableBody = document.getElementById('worksTableBody');
+            tableBody.innerHTML = '';
+            
+            works.forEach(work => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${work.id}</td>
+                    <td>${work.work_type}</td>
+                    <td>${work.field_name}</td>
+                    <td>${work.crop_type}</td>
+                    <td>
+                        <span class="status-badge ${work.status}">
+                            ${work.status}
+                        </span>
+                    </td>
+                    <td>${work.machinery}</td>
+                    <td>${work.operator}</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: ${work.progress}%"></div>
+                        </div>
+                        ${work.progress}%
+                    </td>
+                    <td>${new Date(work.start_date).toLocaleString()}</td>
+                    <td>${new Date(work.planned_end_date).toLocaleString()}</td>
+                    <td>
+                        <button onclick="showEditWorkForm(${work.id})" class="edit-btn">
+                            <span class="material-icons">edit</span>
+                        </button>
+                        <button onclick="handleDeleteWork(${work.id})" class="delete-btn">
+                            <span class="material-icons">delete</span>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        async function loadWorks() {
+            const works = await getWorks();
+            currentWorks = works.results;
+            renderWorks(currentWorks);
+        }
+
+        // Аутентификация
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/token/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('access_token', data.access);
+                    localStorage.setItem('refresh_token', data.refresh);
+                    localStorage.setItem('username', username);
+                    
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                    document.getElementById('userSection').style.display = 'flex';
+                    document.getElementById('userName').textContent = username;
+                    
+                    loadWorks();
+                } else {
+                    document.getElementById('loginError').textContent = 'Неверное имя пользователя или пароль';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loginError').textContent = 'Ошибка при входе в систему';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('username');
+            
+            document.getElementById('loginForm').style.display = 'flex';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('userSection').style.display = 'none';
+            document.getElementById('loginError').textContent = '';
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            // Настройка модального окна
+            document.querySelector('.close').onclick = () => {
+                document.getElementById('workModal').style.display = 'none';
+            };
+
+            document.getElementById('workForm').onsubmit = handleWorkSubmit;
+
+            // Проверка авторизации
+            if (localStorage.getItem('access_token')) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('userSection').style.display = 'flex';
+                document.getElementById('userName').textContent = localStorage.getItem('username');
+                loadWorks();
+            }
+        });
+    </script>
+</body>
+</html> 

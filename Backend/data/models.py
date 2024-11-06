@@ -1,14 +1,6 @@
 from django.db import models
 
 # Create your models here.
-from django.db import models
-
-class TestModel(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.name
 
 class Vehicle(models.Model):
     vehicle_number = models.CharField(max_length=50, unique=True)
@@ -86,3 +78,29 @@ class WorkActivity(models.Model):
     
     def __str__(self):
         return f"{self.vehicle.vehicle_number} - {self.activity_type}"
+
+class AgriculturalWork(models.Model):
+    WORK_TYPE_CHOICES = [
+        ('plowing', 'Вспашка'),
+        ('seeding', 'Посев'),
+        ('harvesting', 'Уборка'),
+        ('fertilizing', 'Внесение удобрений'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('planned', 'Запланировано'),
+        ('in_progress', 'В процессе'),
+        ('completed', 'Завершено'),
+    ]
+
+    work_type = models.CharField(max_length=20, choices=WORK_TYPE_CHOICES)
+    field_name = models.CharField(max_length=100)
+    crop_type = models.CharField(max_length=100)
+    machinery = models.CharField(max_length=100)
+    operator = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='planned')
+    progress = models.IntegerField(default=0)
+    start_date = models.DateTimeField()
+    planned_end_date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
