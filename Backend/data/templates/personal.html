@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Персонал</title>
     <link href="{% static 'css/personal.css' %}" rel="stylesheet">
+    <script src="{% static 'js/personal.js' %}"></script>
 </head>
 <body>
     <header>
@@ -105,11 +106,27 @@
         </div>
     </div>
 
+    
+    {% autoescape off %}
+        
+    {% if selected != 'none' %}
+        {{ body }}
+        <p>Число положительное</p>
+    {% elif n < 0 %}
+        <p>Число отрицательное</p>
+    {% else %}
+        <p>Число равно нулю</p>
+    {% endif %}
+    {% endautoescape %}
+
+    
+
     <div class="background-elements">
         <div class="gradient-circle"></div>
         <div class="gradient-bottom"></div>
         <img src="{% static 'img/bdai.jpeg' %}" alt="sprout" class="sprout-left">
         <img src="{% static 'img/bdai.jpeg' %}" alt="sprout" class="sprout-center">
-        <img src="{% static 'img/bdai.jpeg' %}" alt="sprout" class="sprout-rightdai
+        <img src="{% static 'img/bdai.jpeg' %}" alt="sprout" class="sprout-rightdai">
+    </div>
 </body>
 </html>

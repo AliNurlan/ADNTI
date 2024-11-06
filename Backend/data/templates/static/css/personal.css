@@ -173,29 +173,29 @@ h1 {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 50%);
 }
 
-.sprout-left {
-    position: absolute;
-    width: 7.32vw;
-    height: 7.32vw;
-    left: 41.36vw;
-    bottom: 7.32vw;
-    transform: rotate(1.03deg);
+.staff-info {
+    cursor: pointer;
+    /* существующие стили... */
 }
 
-.sprout-center {
-    position: absolute;
-    width: 7.32vw;
-    height: 7.32vw;
-    left: 50%;
-    bottom: 7.32vw;
-    transform: translateX(-50%) rotate(1.03deg);
+.staff-info:hover {
+    background-color: #f5f5f5;
 }
 
-.sprout-right {
-    position: absolute;
-    width: 7.32vw;
-    height: 7.32vw;
-    right: 41.36vw;
-    bottom: 7.32vw;
-    transform: rotate(1.03deg);
+.workplaces-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.workplace-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.workplace-item p {
+    margin: 5px 0;
 }

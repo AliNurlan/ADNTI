@@ -7,15 +7,19 @@ from .models import (
     FuelConsumption,
     MaintenanceRecord,
     WorkActivity,
-    Equipment
+    Equipment,
+    Staff
 )
 from .serializers import (
     VehicleSerializer,
     FuelConsumptionSerializer,
     MaintenanceRecordSerializer,
     WorkActivitySerializer,
-    EquipmentSerializer
+    EquipmentSerializer,
+    StaffSerializer
 )
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 
 class VehicleViewSet(viewsets.ModelViewSet):
     """
@@ -71,6 +75,14 @@ class EquipmentViewSet(viewsets.ModelViewSet):
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
 
+class StaffViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Staff.objects.all()
+    serializer_class = StaffSerializer
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['full_name', 'position']
+    ordering_fields = ['full_name', 'salary']
+
 def vehicles(request):
     """
     Отображает страницу со списком транспортных средств
@@ -87,4 +99,21 @@ def personal(request):
     """
     Отображает страницу персонала
     """
-    return render(request, 'personal.html')
+    staff_data = Staff.objects.all()
+    return render(request, 'personal.html', {'staff_data': staff_data})
+
+@require_http_methods(["GET"])
+def get_staff_workplaces(request, staff_id):
+    try:
+        staff = Staff.objects.get(id=staff_id)
+        return JsonResponse({
+            'workplaces': {
+                'full_name': staff.full_name,
+                'position': staff.position,
+                'salary': str(staff.salary)
+            }
+        })
+    except Staff.DoesNotExist:
+        return JsonResponse({'error': 'Сотрудник не найден'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)

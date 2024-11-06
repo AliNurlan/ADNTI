@@ -1,14 +1,8 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 from django.db import models
-
-class TestModel(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.name
 
 class Vehicle(models.Model):
     vehicle_number = models.CharField(max_length=50, unique=True)
@@ -86,3 +80,21 @@ class WorkActivity(models.Model):
     
     def __str__(self):
         return f"{self.vehicle.vehicle_number} - {self.activity_type}"
+
+class Staff(models.Model):
+    full_name = models.CharField(max_length=200, verbose_name="ФИО")
+    position = models.CharField(max_length=100, verbose_name="Должность")
+    salary = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        verbose_name="Зарплата",
+        validators=[MinValueValidator(0)]
+    )
+
+    def __str__(self):
+        return f"{self.full_name} - {self.position}"
+
+    class Meta:
+        verbose_name = "Сотрудник"
+        verbose_name_plural = "Сотрудники"
+        ordering = ['full_name']  # сортировка по умолчанию
