@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vehicle, Equipment, FuelConsumption, MaintenanceRecord, WorkActivity, Staff
+from .models import Vehicle, Equipment, FuelConsumption, MaintenanceRecord, WorkActivity, Staff, AgriculturalWork
 
 class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +30,7 @@ class StaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff
         fields = ['id', 'full_name', 'position', 'salary'] 
+class AgriculturalWorkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AgriculturalWork
+        fields = '__all__' 

@@ -8,7 +8,8 @@ from .models import (
     MaintenanceRecord,
     WorkActivity,
     Equipment,
-    Staff
+    Staff,
+    AgriculturalWork
 )
 from .serializers import (
     VehicleSerializer,
@@ -16,7 +17,8 @@ from .serializers import (
     MaintenanceRecordSerializer,
     WorkActivitySerializer,
     EquipmentSerializer,
-    StaffSerializer
+    StaffSerializer,
+    AgriculturalWorkSerializer
 )
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
@@ -82,6 +84,11 @@ class StaffViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['full_name', 'position']
     ordering_fields = ['full_name', 'salary']
+    
+class AgriculturalWorkViewSet(viewsets.ModelViewSet):
+    queryset = AgriculturalWork.objects.all()
+    serializer_class = AgriculturalWorkSerializer
+    permission_classes = [IsAuthenticated]
 
 def vehicles(request):
     """
@@ -127,3 +134,9 @@ def staff_list(request, position):
         'staff_list': staff_list,
         'position': position
     })
+
+def agricultural_works(request):
+    """
+    Отображает страницу агроработ
+    """
+    return render(request, 'agricultural_works.html')

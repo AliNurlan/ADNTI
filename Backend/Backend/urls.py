@@ -33,6 +33,8 @@ from data.views import (
     personal,
     get_staff_workplaces,
     staff_list,
+    agricultural_works,
+    AgriculturalWorkViewSet
 )
 
 # Настройка документации API
@@ -54,6 +56,7 @@ router.register(r'equipment', EquipmentViewSet)
 router.register(r'fuel-consumption', FuelConsumptionViewSet)
 router.register(r'maintenance', MaintenanceRecordViewSet)
 router.register(r'work-activities', WorkActivityViewSet)
+router.register(r'agricultural-works', AgriculturalWorkViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -66,4 +69,6 @@ urlpatterns = [
     # Документация API
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('personal/', personal, name='personal'),
+    path('agricultural_works/', agricultural_works, name='agricultural_works'),
 ]
