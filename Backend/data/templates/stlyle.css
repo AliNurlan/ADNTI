@@ -1,0 +1,66 @@
+.que img {
+   border-radius: 20px;
+   width: 600px;
+ } 
+ 
+ 
+ .ewq img {
+   border-radius: 50%;
+   width: 600px;
+ } 
+ 
+ 
+ .poi img {
+   border: 7px solid #0026ff;
+   border-radius: 4px;
+   padding: 5px;
+   width: 500px;
+ } 
+
+ .rew img {
+   border: 4px solid #ddd;
+   border-radius: 100px;
+   padding: 5px;
+   width: 600px;
+ }
+
+ .bvc img {
+   max-width: 100%;
+   height: auto;
+ }
+
+ .iop img {
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+   width: 50%;
+ }
+ 
+ div.polaroid {
+   width: 80%;
+   background-color: white;
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+ }
+ 
+ img {width: 100%}
+ 
+ div.container {
+   text-align: center;
+   padding: 10px 20px;
+ }
+ 
+ .vcx img {
+   opacity: 0.5;
+   width: 600px;
+ }
+ 
+
+ .lkj img {
+   filter: grayscale(100%);
+   width: 600px;
+ }
+ 
+ .container {
+  position: relative;
+}
+
